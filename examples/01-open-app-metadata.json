@@ -1,0 +1,10 @@
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "handle": -1,
+  "method": "OpenDoc",
+  "params": {
+    "qDocName": "YOUR_APP_ID",
+    "qNoData": true
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "jsonrpc": "2.0",
+  "id": 11,
+  "handle": 1,
+  "method": "CreateDimension",
+  "params": {
+    "qProp": {
+      "qInfo": {
+        "qId": "MASTER_DIMENSION_ORDER_MONTH",
+        "qType": "dimension"
+      },
+      "qDim": {
+        "qGrouping": "N",
+        "qFieldDefs": [
+          "OrderMonth"
+        ],
+        "qFieldLabels": [
+          "Order month"
+        ]
+      },
+      "qMetaDef": {
+        "title": "Order month",
+        "description": "Calendar month associated with the order date.",
+        "tags": [
+          "calendar",
+          "governed"
+        ]
+      }
+    }
+  }
+}

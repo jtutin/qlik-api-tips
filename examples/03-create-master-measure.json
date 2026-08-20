@@ -1,0 +1,35 @@
+{
+  "jsonrpc": "2.0",
+  "id": 10,
+  "handle": 1,
+  "method": "CreateMeasure",
+  "params": {
+    "qProp": {
+      "qInfo": {
+        "qId": "MASTER_MEASURE_REVENUE_MARGIN",
+        "qType": "measure"
+      },
+      "qMeasure": {
+        "qLabel": "Revenue margin",
+        "qDef": "Sum(Revenue - Cost) / Sum(Revenue)",
+        "qGrouping": "N",
+        "qNumFormat": {
+          "qType": "F",
+          "qnDec": 1,
+          "qUseThou": 0,
+          "qFmt": "0.0%",
+          "qDec": ".",
+          "qThou": ","
+        }
+      },
+      "qMetaDef": {
+        "title": "Revenue margin",
+        "description": "Gross margin as a proportion of revenue in the current selection context.",
+        "tags": [
+          "finance",
+          "governed"
+        ]
+      }
+    }
+  }
+}

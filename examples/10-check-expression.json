@@ -1,0 +1,11 @@
+{
+  "jsonrpc": "2.0",
+  "id": 41,
+  "handle": 1,
+  "method": "CheckExpression",
+  "params": {
+    "qExpr": "Sum(Revenue - Cost) / Sum(Revenue)",
+    "qLabels": [],
+    "qStrictFieldValidation": true
+  }
+}

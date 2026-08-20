@@ -1,0 +1,134 @@
+{
+  "jsonrpc": "2.0",
+  "id": 20,
+  "handle": 2,
+  "method": "CreateChild",
+  "params": {
+    "qProp": {
+      "qInfo": {
+        "qId": "TABLE_MONTHLY_PERFORMANCE",
+        "qType": "table"
+      },
+      "qMetaDef": {
+        "title": "Monthly performance table",
+        "description": "Example table created with a complete hypercube definition in one request."
+      },
+      "showTitles": true,
+      "title": "Monthly performance",
+      "subtitle": "Revenue, margin, and target attainment",
+      "footnote": "Values respond to the current selections.",
+      "qHyperCubeDef": {
+        "qStateName": "$",
+        "qDimensions": [
+          {
+            "qLibraryId": "MASTER_DIMENSION_ORDER_MONTH",
+            "qNullSuppression": true,
+            "qDef": {
+              "qNumberPresentations": [
+                {
+                  "qType": "D",
+                  "qnDec": 0,
+                  "qUseThou": 0,
+                  "qFmt": "MMM YYYY",
+                  "qDec": ".",
+                  "qThou": ","
+                }
+              ],
+              "qSortCriterias": [
+                {
+                  "qSortByNumeric": 1,
+                  "qSortByLoadOrder": 1
+                }
+              ]
+            }
+          }
+        ],
+        "qMeasures": [
+          {
+            "qLibraryId": "",
+            "qDef": {
+              "qLabel": "Revenue",
+              "qDescription": "Revenue in the current selection context.",
+              "qGrouping": "N",
+              "qDef": "Sum(Revenue)",
+              "qNumFormat": {
+                "qType": "M",
+                "qnDec": 0,
+                "qUseThou": 1,
+                "qFmt": "$#,##0;-$#,##0",
+                "qDec": ".",
+                "qThou": ","
+              },
+              "numFormatFromTemplate": false
+            }
+          },
+          {
+            "qLibraryId": "MASTER_MEASURE_REVENUE_MARGIN"
+          },
+          {
+            "qLibraryId": "",
+            "qDef": {
+              "qLabel": "Target attainment",
+              "qDescription": "Actual revenue divided by target revenue.",
+              "qGrouping": "N",
+              "qDef": "Sum(Revenue) / Sum(TargetRevenue)",
+              "qNumFormat": {
+                "qType": "F",
+                "qnDec": 1,
+                "qUseThou": 0,
+                "qFmt": "0.0%",
+                "qDec": ".",
+                "qThou": ","
+              },
+              "numFormatFromTemplate": false
+            },
+            "qAttributeExpressions": [
+              {
+                "qExpression": "If(Sum(Revenue) / Sum(TargetRevenue) >= 1, RGB(225,245,234), RGB(255,235,235))",
+                "id": "cellBackgroundColor"
+              },
+              {
+                "qExpression": "If(Sum(Revenue) / Sum(TargetRevenue) >= 1, RGB(20,90,50), RGB(150,30,30))",
+                "id": "cellForegroundColor"
+              }
+            ]
+          }
+        ],
+        "qSuppressZero": false,
+        "qSuppressMissing": true,
+        "qInterColumnSortOrder": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "qColumnOrder": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "columnOrder": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "columnWidths": [
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "qInitialDataFetch": [
+          {
+            "qTop": 0,
+            "qLeft": 0,
+            "qHeight": 100,
+            "qWidth": 4
+          }
+        ]
+      }
+    }
+  }
+}

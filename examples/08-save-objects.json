@@ -1,0 +1,7 @@
+{
+  "jsonrpc": "2.0",
+  "id": 90,
+  "handle": 1,
+  "method": "SaveObjects",
+  "params": {}
+}

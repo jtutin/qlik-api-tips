@@ -1,0 +1,15 @@
+{
+  "jsonrpc": "2.0",
+  "id": 30,
+  "handle": 4,
+  "method": "ApplyPatches",
+  "params": {
+    "qPatches": [
+      {
+        "qOp": "replace",
+        "qPath": "/qMetaDef/description",
+        "qValue": "\"Updated governed description.\""
+      }
+    ]
+  }
+}

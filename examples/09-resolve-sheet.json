@@ -1,0 +1,9 @@
+{
+  "jsonrpc": "2.0",
+  "id": 40,
+  "handle": 1,
+  "method": "GetObject",
+  "params": {
+    "qId": "YOUR_SHEET_ID"
+  }
+}

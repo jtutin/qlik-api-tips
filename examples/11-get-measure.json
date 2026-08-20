@@ -1,0 +1,9 @@
+{
+  "jsonrpc": "2.0",
+  "id": 42,
+  "handle": 1,
+  "method": "GetMeasure",
+  "params": {
+    "qId": "YOUR_MEASURE_ID"
+  }
+}

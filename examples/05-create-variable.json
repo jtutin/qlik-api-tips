@@ -1,0 +1,34 @@
+{
+  "jsonrpc": "2.0",
+  "id": 12,
+  "handle": 1,
+  "method": "CreateVariableEx",
+  "params": {
+    "qProp": {
+      "qInfo": {
+        "qId": "VARIABLE_ROLLING_MONTHS",
+        "qType": "variable"
+      },
+      "qMetaDef": {
+        "title": "Rolling month window"
+      },
+      "qName": "vRollingMonths",
+      "qComment": "Number of complete months used by rolling-period measures.",
+      "qDefinition": "12",
+      "qIncludeInBookmark": false,
+      "qNumberPresentation": {
+        "qType": "I",
+        "qnDec": 0,
+        "qUseThou": 0,
+        "qFmt": "0",
+        "qDec": ".",
+        "qThou": ","
+      },
+      "qConstraints": {
+        "qType": "number",
+        "qValuesText": [],
+        "qValuesNum": []
+      }
+    }
+  }
+}
