@@ -1,0 +1,62 @@
+{
+  "template_id": "MASTER_KPI_V1",
+  "visualization": "kpi",
+  "qInfo_type": "masterobject",
+  "validated_client_version": "2.0.9",
+  "validated_date": "2026-08-20",
+  "defaults": {
+    "show_titles": true,
+    "show_measure_title": true,
+    "text_align": "center",
+    "layout_behavior": "relative",
+    "font_size": "M",
+    "disable_nav_menu": true,
+    "title_font_size": "18px",
+    "subtitle_font_size": "15px",
+    "border_color": "#d9d9d9",
+    "shadow": "0px 1px 2px 0px",
+    "conditional_coloring": false
+  },
+  "required_parameters": [
+    "object_id",
+    "title",
+    "description",
+    "master_measure_id"
+  ],
+  "optional_parameters": [
+    "subtitle",
+    "footnote",
+    "domain",
+    "tags",
+    "show_titles",
+    "show_measure_title",
+    "text_align",
+    "font_size"
+  ],
+  "tag_convention": [
+    "MASTER_VISUALIZATION",
+    "KPI",
+    "DOMAIN:<DOMAIN>",
+    "MEASURE:<MASTER_MEASURE_ID>",
+    "TEMPLATE:KPI_V1"
+  ],
+  "validation": {
+    "properties": [
+      "qInfo.qType = masterobject",
+      "visualization = kpi",
+      "qHyperCubeDef.qDimensions is empty",
+      "qHyperCubeDef.qMeasures[0].qLibraryId matches expected master measure",
+      "version = 2.0.9",
+      "textAlign = center",
+      "layoutBehavior = relative"
+    ],
+    "layout": [
+      "qMeasureInfo is populated",
+      "master measure label resolves",
+      "master measure number format is inherited",
+      "qDataPages is populated when the app is opened with data",
+      "no hypercube error is present"
+    ],
+    "save_method": "SaveObjects"
+  }
+}

@@ -7,7 +7,7 @@ Use governed visualization templates as stable deployment contracts. Client-spec
 Use these tags on governed master visualizations where applicable:
 
 - `MASTER_VISUALIZATION`
-- visualization type, for example `BARCHART`, `LINECHART`, or `TABLE`
+- visualization type, for example `BARCHART`, `LINECHART`, `TABLE`, or `KPI`
 - `DOMAIN:<DOMAIN>`
 - `MEASURE:<MASTER_MEASURE_ID>`
 - `DIMENSION:<FIELD_OR_MASTER_DIMENSION_ID>`
@@ -48,6 +48,8 @@ LEGEND_SHOW
 When lines represent categories of the same metric, prefer the second shape. The second dimension becomes the series split, for example `EVENT_DATE + FACILITY + Average Waiting Patients`. Set `legend.show = true` and `legend.showTitle = true` whenever a series dimension is present. For a single-series chart, the governed default remains `legend.show = false`.
 
 For `MASTER_TABLE_V1`, the column collection is variable. Each dimension column supplies a field, display label, and component ID. Each measure column supplies a persistent master-measure ID and component ID. Validate master-measure IDs before creating the table and keep all column-order and column-width arrays synchronized with the final column count.
+
+For `MASTER_KPI_V1`, require a persistent master-measure ID. Object title/subtitle are supported independently from the inherited master-measure title. `showTitles` and `showMeasureTitle` are therefore explicit deployment controls rather than assumptions baked into the measure definition.
 
 ## Current governed templates
 
@@ -118,6 +120,29 @@ The table template deliberately keeps the dimension and measure arrays variable.
 
 Master measures are referenced through `qLibraryId`; their governed labels and number formats should be inherited rather than duplicated locally. A missing or incorrect persistent master-measure ID can cause that column to fail even when the table schema itself is valid, so validate all referenced IDs before `CreateObject`.
 
+### MASTER_KPI_V1
+
+Validated against native KPI client version `2.0.9` with a governed master measure, then re-tested with an object title and subtitle.
+
+Standard presentation:
+
+```text
+master measure = referenced through qLibraryId
+text alignment = center
+layout behavior = relative
+font size = M
+navigation menu = disabled
+main title = 18px
+subtitle = 15px
+border = #d9d9d9
+shadow = 0px 1px 2px 0px
+conditional coloring = off by default
+```
+
+The KPI can be deployed with or without an object title/subtitle. When `showTitles = true`, populate `title` and optionally `subtitle`. `showMeasureTitle` controls the inherited master-measure title separately; turn it off when the object title would otherwise duplicate the measure label.
+
+The master measure remains the source of the KPI label, expression, and number format. Do not duplicate the measure expression locally.
+
 ## Post-create validation
 
 After `CreateObject`, verify the persistent definition with `GetProperties`:
@@ -132,7 +157,7 @@ qHyperCubeDef.qMeasures[*].qLibraryId = expected master measures
 When the app is opened with data, use `GetLayout` to verify runtime evaluation:
 
 ```text
-qDimensionInfo populated
+qDimensionInfo populated when dimensions are present
 qMeasureInfo populated when measures are present
 qDataPages populated
 no hypercube error present
@@ -165,6 +190,19 @@ textAlign.auto = false
 textAlign.align = left
 multiline.wrapTextInHeaders = false
 multiline.wrapTextInCells = false
+```
+
+For KPIs using `MASTER_KPI_V1`, also verify:
+
+```text
+qHyperCubeDef.qDimensions is empty
+qHyperCubeDef.qMeasures[0].qLibraryId resolves
+master measure label resolves
+master measure number format is inherited
+visualization = kpi
+version = 2.0.9
+textAlign = center
+layoutBehavior = relative
 ```
 
 Call `SaveObjects` only after the verified batch.
