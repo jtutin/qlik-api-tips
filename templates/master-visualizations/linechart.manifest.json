@@ -1,0 +1,63 @@
+{
+  "template_id": "MASTER_LINECHART_V1",
+  "visualization": "linechart",
+  "qInfo_type": "masterobject",
+  "validated_client_version": "1.47.1",
+  "validated_date": "2026-08-20",
+  "defaults": {
+    "line_thickness": 3,
+    "data_point_size": 10,
+    "scrollbar": "none",
+    "null_mode": "gap",
+    "max_num_points": 2000,
+    "max_num_lines": 12,
+    "title_font_size": "18px",
+    "subtitle_font_size": "15px",
+    "legend": false,
+    "y_axis_min": 0,
+    "y_axis_max": "auto"
+  },
+  "required_parameters": [
+    "object_id",
+    "title",
+    "description",
+    "dimension_field",
+    "dimension_label",
+    "master_measure_id"
+  ],
+  "optional_parameters": [
+    "subtitle",
+    "footnote",
+    "tags",
+    "domain",
+    "legend",
+    "line_thickness",
+    "data_point_size"
+  ],
+  "tag_convention": [
+    "MASTER_VISUALIZATION",
+    "LINECHART",
+    "DOMAIN:<DOMAIN>",
+    "MEASURE:<MASTER_MEASURE_ID>",
+    "DIMENSION:<FIELD_OR_MASTER_DIMENSION_ID>",
+    "TEMPLATE:LINECHART_V1"
+  ],
+  "validation": {
+    "properties": [
+      "qInfo.qType = masterobject",
+      "visualization = linechart",
+      "qHyperCubeDef.qDimensions[0] matches expected dimension",
+      "qHyperCubeDef.qMeasures[0].qLibraryId matches expected master measure",
+      "measureAxis.autoMinMax = false",
+      "measureAxis.minMax = min",
+      "measureAxis.min = 0"
+    ],
+    "layout": [
+      "qDimensionInfo is populated",
+      "qMeasureInfo is populated",
+      "qDataPages is populated when the app is opened with data",
+      "no hypercube error is present"
+    ],
+    "save_method": "SaveObjects"
+  }
+}
