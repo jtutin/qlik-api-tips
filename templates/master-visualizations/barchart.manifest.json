@@ -1,0 +1,52 @@
+{
+  "template_id": "MASTER_BARCHART_V1",
+  "visualization": "barchart",
+  "qInfo_type": "masterobject",
+  "validated_client_version": "1.39.8",
+  "validated_date": "2026-08-20",
+  "defaults": {
+    "bar_width": 0.8,
+    "scrollbar": "none",
+    "title_font_size": "18px",
+    "subtitle_font_size": "15px",
+    "legend": false
+  },
+  "required_parameters": [
+    "object_id",
+    "title",
+    "description",
+    "dimension_field",
+    "dimension_label",
+    "master_measure_id"
+  ],
+  "optional_parameters": [
+    "subtitle",
+    "footnote",
+    "tags",
+    "domain",
+    "legend"
+  ],
+  "tag_convention": [
+    "MASTER_VISUALIZATION",
+    "BARCHART",
+    "DOMAIN:<DOMAIN>",
+    "MEASURE:<MASTER_MEASURE_ID>",
+    "DIMENSION:<FIELD_OR_MASTER_DIMENSION_ID>",
+    "TEMPLATE:BARCHART_V1"
+  ],
+  "validation": {
+    "properties": [
+      "qInfo.qType = masterobject",
+      "visualization = barchart",
+      "qHyperCubeDef.qDimensions[0] matches expected dimension",
+      "qHyperCubeDef.qMeasures[0].qLibraryId matches expected master measure"
+    ],
+    "layout": [
+      "qDimensionInfo is populated",
+      "qMeasureInfo is populated",
+      "qDataPages is populated when the app is opened with data",
+      "no hypercube error is present"
+    ],
+    "save_method": "SaveObjects"
+  }
+}
