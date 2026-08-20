@@ -38,7 +38,14 @@ TAGS
 LEGEND_SHOW
 ```
 
-`MASTER_LINECHART_V1` additionally allows `LINE_THICKNESS` and `DATA_POINT_SIZE` when an intentional override is required. All other visual properties should remain governed by the template unless there is an explicit reason to override them.
+`MASTER_LINECHART_V1` additionally allows `LINE_THICKNESS` and `DATA_POINT_SIZE` when an intentional override is required. It supports two governed shapes:
+
+```text
+1 ordered dimension + 1 or more compatible measures
+1 ordered dimension + 1 series dimension + 1 master measure
+```
+
+When lines represent categories of the same metric, prefer the second shape. The second dimension becomes the series split, for example `EVENT_DATE + FACILITY + Average Waiting Patients`. Set `legend.show = true` and `legend.showTitle = true` whenever a series dimension is present. For a single-series chart, the governed default remains `legend.show = false`.
 
 For `MASTER_TABLE_V1`, the column collection is variable. Each dimension column supplies a field, display label, and component ID. Each measure column supplies a persistent master-measure ID and component ID. Validate master-measure IDs before creating the table and keep all column-order and column-width arrays synchronized with the final column count.
 
@@ -71,7 +78,8 @@ scrollbar = none
 null mode = gap
 main title = 18px
 subtitle = 15px
-legend = false by default
+legend = false for single-series charts
+legend = true when a series dimension is present
 Y-axis minimum = 0
 Y-axis maximum = automatic
 ```
@@ -85,6 +93,8 @@ measureAxis.min = 0
 ```
 
 The stored `measureAxis.max` value is not treated as a fixed maximum when `minMax = min`.
+
+For categorical multi-line charts using one measure, add the series dimension as the second hypercube dimension and extend `qInterColumnSortOrder` for the extra column. Keep the governed master measure referenced through `qLibraryId`. This pattern was validated with `EVENT_DATE` as the ordered dimension, `FACILITY` as the series dimension, and `MASTER_MEASURE_AVERAGE_WAITING_PATIENTS` as the measure.
 
 ### MASTER_TABLE_V1
 
@@ -134,6 +144,15 @@ For line charts using `MASTER_LINECHART_V1`, also verify the Y-axis contract:
 measureAxis.autoMinMax = false
 measureAxis.minMax = min
 measureAxis.min = 0
+```
+
+When a line chart uses a second dimension as a series split, also verify:
+
+```text
+qDimensionInfo contains both dimensions
+qMeasureInfo contains the governed measure
+legend.show = true
+series dimension resolves to distinct lines
 ```
 
 For tables using `MASTER_TABLE_V1`, also verify:

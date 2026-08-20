@@ -4,6 +4,18 @@
   "qInfo_type": "masterobject",
   "validated_client_version": "1.47.1",
   "validated_date": "2026-08-20",
+  "supported_shapes": [
+    {
+      "dimensions": 1,
+      "measures": "1+",
+      "description": "One ordered dimension with one or more compatible measures."
+    },
+    {
+      "dimensions": 2,
+      "measures": 1,
+      "description": "One ordered dimension plus one series dimension with a single governed master measure. Preferred when lines represent categories of the same metric."
+    }
+  ],
   "defaults": {
     "line_thickness": 3,
     "data_point_size": 10,
@@ -14,6 +26,7 @@
     "title_font_size": "18px",
     "subtitle_font_size": "15px",
     "legend": false,
+    "legend_with_series_dimension": true,
     "y_axis_min": 0,
     "y_axis_max": "auto"
   },
@@ -32,7 +45,10 @@
     "domain",
     "legend",
     "line_thickness",
-    "data_point_size"
+    "data_point_size",
+    "series_dimension_field",
+    "series_dimension_label",
+    "additional_master_measure_ids"
   ],
   "tag_convention": [
     "MASTER_VISUALIZATION",
@@ -46,8 +62,9 @@
     "properties": [
       "qInfo.qType = masterobject",
       "visualization = linechart",
-      "qHyperCubeDef.qDimensions[0] matches expected dimension",
-      "qHyperCubeDef.qMeasures[0].qLibraryId matches expected master measure",
+      "qHyperCubeDef.qDimensions matches expected dimensions",
+      "qHyperCubeDef.qMeasures[*].qLibraryId matches expected master measures",
+      "legend.show = true when a series dimension is present",
       "measureAxis.autoMinMax = false",
       "measureAxis.minMax = min",
       "measureAxis.min = 0"
@@ -56,6 +73,7 @@
       "qDimensionInfo is populated",
       "qMeasureInfo is populated",
       "qDataPages is populated when the app is opened with data",
+      "series dimension produces distinct lines when present",
       "no hypercube error is present"
     ],
     "save_method": "SaveObjects"
