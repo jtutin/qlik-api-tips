@@ -1,0 +1,71 @@
+{
+  "template_id": "MASTER_TABLE_V1",
+  "visualization": "table",
+  "qInfo_type": "masterobject",
+  "validated_date": "2026-08-20",
+  "defaults": {
+    "title_font_size": "18px",
+    "subtitle_font_size": "15px",
+    "column_alignment": "left",
+    "wrap_text_in_headers": false,
+    "wrap_text_in_cells": false,
+    "horizontal_scrolling": true,
+    "column_width": -1,
+    "totals_position": "noTotals"
+  },
+  "required_parameters": [
+    "object_id",
+    "title",
+    "description",
+    "columns"
+  ],
+  "optional_parameters": [
+    "subtitle",
+    "footnote",
+    "tags",
+    "domain"
+  ],
+  "column_contract": {
+    "dimension": [
+      "field",
+      "label",
+      "component_id"
+    ],
+    "measure": [
+      "master_measure_id",
+      "component_id"
+    ],
+    "notes": [
+      "Repeat qDimensions and qMeasures blocks as required.",
+      "Keep qInterColumnSortOrder, qColumnOrder, columnOrder and columnWidths aligned to the final total column count.",
+      "Validate every master_measure_id exists before CreateObject.",
+      "Master measure formatting and labels should be inherited through qLibraryId."
+    ]
+  },
+  "tag_convention": [
+    "MASTER_VISUALIZATION",
+    "TABLE",
+    "DOMAIN:<DOMAIN>",
+    "DIMENSION:<FIELD_OR_MASTER_DIMENSION_ID>",
+    "MEASURE:<MASTER_MEASURE_ID>",
+    "TEMPLATE:TABLE_V1"
+  ],
+  "validation": {
+    "properties": [
+      "qInfo.qType = masterobject",
+      "visualization = table",
+      "qHyperCubeDef.qDimensions matches expected dimensions",
+      "qHyperCubeDef.qMeasures[*].qLibraryId matches expected master measures",
+      "all columns use textAlign.auto = false and textAlign.align = left",
+      "multiline.wrapTextInHeaders = false",
+      "multiline.wrapTextInCells = false"
+    ],
+    "layout": [
+      "qDimensionInfo count matches requested dimensions",
+      "qMeasureInfo count matches requested measures",
+      "qDataPages is populated when the app is opened with data",
+      "no hypercube error is present"
+    ],
+    "save_method": "SaveObjects"
+  }
+}
