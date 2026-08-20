@@ -1,0 +1,15 @@
+{
+  "jsonrpc": "2.0",
+  "id": 44,
+  "handle": 2,
+  "method": "CreateChild",
+  "params": {
+    "qProp": {
+      "qInfo": {
+        "qId": "MARGIN_BY_MONTH_INSTANCE",
+        "qType": "barchart"
+      },
+      "qExtendsId": "MASTER_VISUAL_MARGIN_BY_MONTH"
+    }
+  }
+}

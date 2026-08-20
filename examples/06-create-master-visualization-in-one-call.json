@@ -1,0 +1,84 @@
+{
+  "jsonrpc": "2.0",
+  "id": 20,
+  "handle": 1,
+  "method": "CreateObject",
+  "params": {
+    "qProp": {
+      "qInfo": {
+        "qId": "MASTER_VISUAL_MARGIN_BY_MONTH",
+        "qType": "barchart"
+      },
+      "qMetaDef": {
+        "title": "Margin by month",
+        "description": "Reusable bar chart showing the governed revenue-margin measure by order month.",
+        "tags": [
+          "finance",
+          "governed",
+          "master-visualization"
+        ]
+      },
+      "showTitles": true,
+      "title": "Revenue margin by month",
+      "subtitle": "Based on governed master items",
+      "footnote": "Values respond to the current selections.",
+      "qHyperCubeDef": {
+        "qStateName": "$",
+        "qDimensions": [
+          {
+            "qLibraryId": "MASTER_DIMENSION_ORDER_MONTH",
+            "qNullSuppression": true,
+            "qDef": {
+              "qSortCriterias": [
+                {
+                  "qSortByNumeric": 1,
+                  "qSortByLoadOrder": 1
+                }
+              ],
+              "qNumberPresentations": [
+                {
+                  "qType": "D",
+                  "qnDec": 0,
+                  "qUseThou": 0,
+                  "qFmt": "MMM YYYY",
+                  "qDec": ".",
+                  "qThou": ","
+                }
+              ]
+            }
+          }
+        ],
+        "qMeasures": [
+          {
+            "qLibraryId": "MASTER_MEASURE_REVENUE_MARGIN"
+          }
+        ],
+        "qSuppressZero": false,
+        "qSuppressMissing": true,
+        "qInterColumnSortOrder": [
+          0,
+          1
+        ],
+        "qInitialDataFetch": [
+          {
+            "qTop": 0,
+            "qLeft": 0,
+            "qHeight": 100,
+            "qWidth": 2
+          }
+        ]
+      },
+      "color": {
+        "auto": false,
+        "mode": "primary",
+        "paletteColor": {
+          "index": -1,
+          "color": "#4477AA"
+        }
+      },
+      "legend": {
+        "show": false
+      }
+    }
+  }
+}

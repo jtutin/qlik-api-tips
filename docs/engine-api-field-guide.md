@@ -75,7 +75,7 @@ Create a dimension with `Doc.CreateDimension`:
 - use `qGrouping: N` for a single dimension, `H` for drill-down, or `C` for cyclic grouping;
 - put governance metadata in `qMetaDef`.
 
-The master-dimension definition does not carry the full visual column presentation. For example, a date column's `qNumberPresentations` belongs in the visualization's `NxDimension.qDef`. Govern that presentation in the reusable object template that creates the table or chart.
+The master-dimension definition does not carry the full visual presentation. For example, a date axis's `qNumberPresentations` belongs in the visualization's `NxDimension.qDef`. Govern that presentation in the reusable master-visualization template.
 
 ### Variables
 
@@ -125,45 +125,58 @@ This centralizes expressions, labels, and number formats. Changing the master it
 
 Use an inline `qDef` only when a dimension or measure is intentionally local to that visualization. For inline measures, put `qNumFormat` in the same definition so the object is complete at creation time.
 
-## 6. Build a straight table in one request
+## 6. Create a master visualization in one request
 
-There are two creation paths:
+A reusable master visualization is an app-level generic object. Create it on the app handle with `Doc.CreateObject` and send the complete native visual definition in `qProp`.
 
-- `Doc.CreateObject` creates a generic object at app level;
-- `GenericObject.CreateChild` creates a visual object inside a sheet or other parent.
+The request can define all of the following together:
 
-For a table that should appear on a sheet:
+- a governed persistent ID and visualization type;
+- library-backed master dimensions and measures;
+- the complete hypercube definition;
+- titles, subtitles, and footnotes;
+- sorting, number presentation, colors, and legend behavior;
+- master-item title, description, and tags in `qMetaDef`;
+- a safe initial data page.
+
+See [`06-create-master-visualization-in-one-call.json`](../examples/06-create-master-visualization-in-one-call.json).
+
+### What "one request" means
+
+The single `CreateObject` call creates the reusable app-level master object. It does not also place an instance on a sheet, approve it, or publish it. Those are separate lifecycle actions with different targets and permissions.
+
+Always record the `qInfo.qId`/`qReturn.qGenericId` returned by Qlik. If the requested ID conflicts, the Engine may assign a different one.
+
+### Link a sheet instance to the master
+
+To use the master visualization on a sheet:
 
 1. resolve the sheet with `GetObject`;
 2. call `CreateChild` on the returned sheet handle;
-3. send the complete table `qProp` once.
+3. set the child's `qExtendsId` to the master visualization's persistent ID.
 
-The request can include all of the following together:
+See [`13-create-linked-master-visualization-instance.json`](../examples/13-create-linked-master-visualization-instance.json).
 
-- table type and persistent ID;
-- title, subtitle, footnote, and title visibility;
-- master or inline dimensions;
-- master or inline measures;
-- number formats;
-- null and zero suppression;
-- dimension sort criteria;
-- inter-column sort priority;
-- display column order and widths;
-- cell foreground/background color expressions;
-- the initial hypercube data page.
+The linked instance inherits the master object's properties. Updating the master definition therefore updates all linked instances. Unlinking an instance makes it independent.
 
-See [`06-create-straight-table-in-one-call.json`](../examples/06-create-straight-table-in-one-call.json).
+### Publishing and approval are separate
 
-Two details matter:
+Qlik distinguishes creating a master object from publishing or approving it:
 
-1. `qInterColumnSortOrder` controls sort priority, while `qColumnOrder`/the native table's `columnOrder` controls display position. They are not the same concern.
-2. `qInitialDataFetch` describes the initial page requested in the layout. Its `qWidth` must cover all dimension and measure columns, and the cell count should remain within Engine limits. Fetch additional pages later rather than making an enormous initial request.
+- In an unpublished app, create and maintain the master visualization before publishing the app.
+- Publishing an app publishes its contained generic objects.
+- For an object created inside an already published app, `GenericObject.Publish` applies to the object handle and requires publish access; Qlik documents that this operation does not apply to Qlik Sense Desktop.
+- `GenericObject.Approve` is an additional Qlik Sense Enterprise operation, not part of normal object creation.
 
-Native table presentation properties have changed across Qlik clients. The example includes both Engine hypercube ordering and the native straight-table display properties documented by Qlik. Verify the object in the exact Qlik version you deploy to.
+Do not hide these steps inside a supposed all-in-one payload. Verify the deployment edition and privileges explicitly.
 
-### Persistent versus transient tables
+### Existing chart to master object
 
-Use `CreateChild` or `CreateObject` for a persistent object. Use `CreateSessionObject` for a temporary hypercube used by automation, testing, previews, or data extraction. A session object disappears when the session ends and should not be saved as app content.
+The Qlik .NET SDK exposes higher-level `CreateMasterObject` and `CreateAndLinkMasterObject` helpers for promoting an existing chart. At raw QIX level, this repository focuses on creating the complete app-level object with `CreateObject`, then linking sheet instances with `qExtendsId`.
+
+### Persistent versus transient visuals
+
+Use `CreateObject` for the reusable persistent master and `CreateChild` for a persistent linked sheet instance. Use `CreateSessionObject` only for a temporary visualization or hypercube used by automation, testing, previews, or extraction. A session object disappears when the session ends.
 
 ## 7. Change existing objects safely
 
@@ -276,7 +289,7 @@ Keep out of source control:
 | Empty master-item list | Session-list definition/client behavior | Use `GetAllInfos`, then direct getters |
 | `Invalid handle` | Handle copied from another session or request chain | Resolve the app/object again in the current session |
 | Patch stores extra quotes or fails | `qValue` not JSON-encoded correctly | Encode the replacement value once as JSON |
-| UI table column order is wrong | Sort order confused with display order, or client-native property differs | Set both concerns explicitly and inspect a known-good native table |
+| Master visual is not visible or reusable as expected | Object was created as a sheet child, or publication state/permissions differ | Create the master at app level, inspect `qMeta`, and verify the edition-specific publish workflow |
 | Duplicate master items | Non-idempotent deployment | Discover and compare before `Create*` |
 | Variable cannot be updated | Script-defined or published-app restriction | Change the load script or use a session variable |
 | Object looks correct until reconnect | Soft patch or unsaved change | Use a persistent patch and call `SaveObjects` after verification |
@@ -289,6 +302,8 @@ Keep out of source control:
 - [`GenericMeasure`](https://qlik.dev/apis/json-rpc/qix/genericmeasure/)
 - [`GenericDimension`](https://qlik.dev/apis/json-rpc/qix/genericdimension/)
 - [`GenericVariable`](https://qlik.dev/apis/json-rpc/qix/genericvariable/)
-- [Straight-table properties](https://help.qlik.com/en-US/sense-developer/May2026/Subsystems/APIs/Content/Sense_ClientAPIs/CapabilityAPIs/VisualizationAPI/table-properties.htm)
-- [Table formatting and color examples](https://help.qlik.com/en-US/sense-developer/May2026/Subsystems/Mashups/Content/Sense_Mashups/Create/Visualizations/Table/create-table.htm)
-- [Creating a persistent hypercube as a sheet child](https://help.qlik.com/en-US/sense-developer/May2026/csh/engineapi/create-hypercube)
+- [`CreateObject`: create the app-level master object](https://help.qlik.com/en-US/sense-developer/May2026/Subsystems/EngineJSONAPI/Content/service-doc-createobject.htm)
+- [Native bar-chart properties](https://help.qlik.com/en-US/sense-developer/May2026/Subsystems/APIs/Content/Sense_ClientAPIs/QlikVisual/qlik-visual-barchart-properties.htm)
+- [Creating and reusing master visualizations](https://help.qlik.com/en-US/sense/May2026/Subsystems/Hub/Content/Sense_Hub/Visualizations/create-master-visualization.htm)
+- [`GenericObject.Publish`](https://help.qlik.com/en-US/sense-developer/May2026/Subsystems/EngineJSONAPI/Content/service-genericobject-publish.htm)
+- [Qlik .NET SDK library and master-object helpers](https://help.qlik.com/en-US/sense-developer/May2026/Subsystems/NetSDKAPI/Content/Sense_NetSDKAPI/HowTos/Net-Sdk-How-To-Library.htm)
